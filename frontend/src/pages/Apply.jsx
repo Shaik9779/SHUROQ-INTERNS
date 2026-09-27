@@ -358,8 +358,627 @@
 // }
 
 // export default Apply;
+// import { useState } from "react";
+// import { Link, useNavigate } from "react-router-dom";
+// import {
+//     ArrowLeft,
+//     ArrowRight,
+//     Check,
+//     CheckCircle2,
+//     Mail,
+//     Phone,
+//     User,
+//     GraduationCap,
+//     BriefcaseBusiness,
+//     ShieldCheck
+// } from "lucide-react";
+
+// const roles = [
+//     {
+//         title: "Frontend Developer",
+//         description: "Build modern and responsive web experiences.",
+//         skills: ["React", "JavaScript", "CSS"]
+//     },
+//     {
+//         title: "Backend Developer",
+//         description: "Build APIs and scalable backend systems.",
+//         skills: ["Node.js", "Express", "MongoDB"]
+//     },
+//     {
+//         title: "Data Analyst",
+//         description: "Transform data into meaningful insights.",
+//         skills: ["Python", "SQL", "Power BI"]
+//     }
+// ];
+
+// function Apply() {
+//     const navigate = useNavigate();
+
+//     const [formData, setFormData] = useState({
+//         name: "",
+//         email: "",
+//         phone: "",
+//         education: "",
+//         role: ""
+//     });
+
+//     const [errors, setErrors] = useState({});
+//     const [loading, setLoading] = useState(false);
+
+//     const handleChange = (e) => {
+//         const { name, value } = e.target;
+
+//         setFormData((prev) => ({
+//             ...prev,
+//             [name]: value
+//         }));
+
+//         if (errors[name]) {
+//             setErrors((prev) => ({
+//                 ...prev,
+//                 [name]: ""
+//             }));
+//         }
+//     };
+
+//     const selectRole = (role) => {
+//         setFormData((prev) => ({
+//             ...prev,
+//             role
+//         }));
+
+//         setErrors((prev) => ({
+//             ...prev,
+//             role: ""
+//         }));
+//     };
+
+//     const validate = () => {
+//         const newErrors = {};
+
+//         if (!formData.name.trim()) {
+//             newErrors.name = "Please enter your full name.";
+//         }
+
+//         if (!formData.email.trim()) {
+//             newErrors.email = "Please enter your email.";
+//         } else if (
+//             !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)
+//         ) {
+//             newErrors.email = "Please enter a valid email.";
+//         }
+
+//         if (!formData.phone.trim()) {
+//             newErrors.phone = "Please enter your phone number.";
+//         } else if (!/^[0-9]{10}$/.test(formData.phone)) {
+//             newErrors.phone = "Enter a valid 10-digit number.";
+//         }
+
+//         if (!formData.education.trim()) {
+//             newErrors.education = "Please enter your education.";
+//         }
+
+//         if (!formData.role) {
+//             newErrors.role = "Please select an internship role.";
+//         }
+
+//         return newErrors;
+//     };
+
+//     const handleSubmit = async (e) => {
+//         e.preventDefault();
+
+//         const validationErrors = validate();
+
+//         if (Object.keys(validationErrors).length > 0) {
+//             setErrors(validationErrors);
+
+//             const firstError = Object.keys(validationErrors)[0];
+
+//             document
+//                 .getElementById(firstError)
+//                 ?.scrollIntoView({
+//                     behavior: "smooth",
+//                     block: "center"
+//                 });
+
+//             return;
+//         }
+
+//         setLoading(true);
+
+//         try {
+//             const response = await fetch(
+//                 "http://localhost:5000/api/applications",
+//                 {
+//                     method: "POST",
+//                     headers: {
+//                         "Content-Type": "application/json"
+//                     },
+//                     body: JSON.stringify(formData)
+//                 }
+//             );
+
+//             const data = await response.json();
+
+//             if (!response.ok) {
+//                 throw new Error(
+//                     data.message || "Unable to submit application."
+//                 );
+//             }
+
+//             sessionStorage.setItem(
+//                 "application",
+//                 JSON.stringify(data.application)
+//             );
+
+//             navigate("/success");
+
+//         } catch (error) {
+//             console.error(error);
+
+//             setErrors({
+//                 submit:
+//                     error.message ||
+//                     "Something went wrong. Please try again."
+//             });
+
+//         } finally {
+//             setLoading(false);
+//         }
+//     };
+
+//     return (
+//         <div className="apply-page">
+
+//             {/* TOP NAV */}
+
+//             <header className="apply-header">
+
+//                 <Link to="/" className="apply-back">
+//                     <ArrowLeft size={17} />
+//                     Back to Shuroq
+//                 </Link>
+
+//                 <Link to="/" className="apply-logo">
+//                     SHUROQ
+//                 </Link>
+
+//                 <div className="application-secure">
+//                     <ShieldCheck size={16} />
+//                     Secure Application
+//                 </div>
+
+//             </header>
+
+
+//             {/* PAGE */}
+
+//             <main className="apply-wrapper">
+
+//                 {/* LEFT SIDE */}
+
+//                 <aside className="apply-sidebar">
+
+//                     <div>
+
+//                         <p className="eyebrow">
+//                             INTERNSHIP PROGRAM
+//                         </p>
+
+//                         <h1>
+//                             Build your
+//                             <span> next chapter.</span>
+//                         </h1>
+
+//                         <p className="apply-sidebar-text">
+//                             Take the first step toward gaining
+//                             real-world experience, building meaningful
+//                             projects and growing with Shuroq.
+//                         </p>
+
+//                     </div>
+
+
+//                     <div className="application-steps">
+
+//                         <div className="step active">
+//                             <div className="step-number">
+//                                 <Check size={15} />
+//                             </div>
+
+//                             <div>
+//                                 <strong>Your details</strong>
+//                                 <span>Tell us about yourself</span>
+//                             </div>
+//                         </div>
+
+
+//                         <div className="step">
+//                             <div className="step-number">
+//                                 2
+//                             </div>
+
+//                             <div>
+//                                 <strong>Choose your role</strong>
+//                                 <span>Find where you fit</span>
+//                             </div>
+//                         </div>
+
+
+//                         <div className="step">
+//                             <div className="step-number">
+//                                 3
+//                             </div>
+
+//                             <div>
+//                                 <strong>Submit application</strong>
+//                                 <span>Take your next step</span>
+//                             </div>
+//                         </div>
+
+//                     </div>
+
+
+//                     <div className="sidebar-note">
+
+//                         <CheckCircle2 size={19} />
+
+//                         <div>
+//                             <strong>What happens next?</strong>
+
+//                             <p>
+//                                 Our team will review your application
+//                                 and contact shortlisted candidates.
+//                             </p>
+//                         </div>
+
+//                     </div>
+
+//                 </aside>
+
+
+//                 {/* FORM SIDE */}
+
+//                 <section className="apply-form-section">
+
+//                     <div className="form-heading">
+
+//                         <div>
+//                             <p className="eyebrow">
+//                                 APPLICATION
+//                             </p>
+
+//                             <h2>
+//                                 Tell us about yourself.
+//                             </h2>
+
+//                             <p>
+//                                 It only takes a few minutes to apply.
+//                             </p>
+//                         </div>
+
+//                         <span className="required-label">
+//                             * Required
+//                         </span>
+
+//                     </div>
+
+
+//                     <form
+//                         className="saas-form"
+//                         onSubmit={handleSubmit}
+//                     >
+
+//                         {/* PERSONAL INFORMATION */}
+
+//                         <div className="form-section-title">
+
+//                             <div className="form-section-icon">
+//                                 <User size={18} />
+//                             </div>
+
+//                             <div>
+//                                 <h3>Personal information</h3>
+//                                 <p>
+//                                     Basic information to help us
+//                                     identify you.
+//                                 </p>
+//                             </div>
+
+//                         </div>
+
+
+//                         {/* NAME */}
+
+//                         <div className="form-field">
+
+//                             <label htmlFor="name">
+//                                 Full name <span>*</span>
+//                             </label>
+
+//                             <div
+//                                 className={`input-wrapper ${
+//                                     errors.name
+//                                         ? "has-error"
+//                                         : ""
+//                                 }`}
+//                             >
+//                                 <User size={18} />
+
+//                                 <input
+//                                     id="name"
+//                                     name="name"
+//                                     type="text"
+//                                     placeholder="e.g. Shaik Mahammad Rehan"
+//                                     value={formData.name}
+//                                     onChange={handleChange}
+//                                 />
+//                             </div>
+
+//                             {errors.name && (
+//                                 <small className="field-error">
+//                                     {errors.name}
+//                                 </small>
+//                             )}
+
+//                         </div>
+
+
+//                         {/* EMAIL + PHONE */}
+
+//                         <div className="form-row">
+
+//                             <div className="form-field">
+
+//                                 <label htmlFor="email">
+//                                     Email address <span>*</span>
+//                                 </label>
+
+//                                 <div
+//                                     className={`input-wrapper ${
+//                                         errors.email
+//                                             ? "has-error"
+//                                             : ""
+//                                     }`}
+//                                 >
+//                                     <Mail size={18} />
+
+//                                     <input
+//                                         id="email"
+//                                         name="email"
+//                                         type="email"
+//                                         placeholder="you@example.com"
+//                                         value={formData.email}
+//                                         onChange={handleChange}
+//                                     />
+//                                 </div>
+
+//                                 {errors.email && (
+//                                     <small className="field-error">
+//                                         {errors.email}
+//                                     </small>
+//                                 )}
+
+//                             </div>
+
+
+//                             <div className="form-field">
+
+//                                 <label htmlFor="phone">
+//                                     Phone number <span>*</span>
+//                                 </label>
+
+//                                 <div
+//                                     className={`input-wrapper ${
+//                                         errors.phone
+//                                             ? "has-error"
+//                                             : ""
+//                                     }`}
+//                                 >
+//                                     <Phone size={18} />
+
+//                                     <input
+//                                         id="phone"
+//                                         name="phone"
+//                                         type="tel"
+//                                         placeholder="10-digit number"
+//                                         maxLength="10"
+//                                         value={formData.phone}
+//                                         onChange={handleChange}
+//                                     />
+//                                 </div>
+
+//                                 {errors.phone && (
+//                                     <small className="field-error">
+//                                         {errors.phone}
+//                                     </small>
+//                                 )}
+
+//                             </div>
+
+//                         </div>
+
+
+//                         {/* EDUCATION */}
+
+//                         <div className="form-field">
+
+//                             <label htmlFor="education">
+//                                 Education <span>*</span>
+//                             </label>
+
+//                             <div
+//                                 className={`input-wrapper ${
+//                                     errors.education
+//                                         ? "has-error"
+//                                         : ""
+//                                 }`}
+//                             >
+//                                 <GraduationCap size={18} />
+
+//                                 <input
+//                                     id="education"
+//                                     name="education"
+//                                     type="text"
+//                                     placeholder="e.g. B.Tech Computer Science"
+//                                     value={formData.education}
+//                                     onChange={handleChange}
+//                                 />
+//                             </div>
+
+//                             {errors.education && (
+//                                 <small className="field-error">
+//                                     {errors.education}
+//                                 </small>
+//                             )}
+
+//                         </div>
+
+
+//                         {/* ROLE */}
+
+//                         <div className="form-section-title role-title">
+
+//                             <div className="form-section-icon">
+//                                 <BriefcaseBusiness size={18} />
+//                             </div>
+
+//                             <div>
+//                                 <h3>Choose your role</h3>
+//                                 <p>
+//                                     Select the opportunity that matches
+//                                     your interests.
+//                                 </p>
+//                             </div>
+
+//                         </div>
+
+
+//                         <div className="role-selection">
+
+//                             {roles.map((item) => (
+
+//                                 <button
+//                                     type="button"
+//                                     key={item.title}
+//                                     className={`role-option ${
+//                                         formData.role === item.title
+//                                             ? "selected"
+//                                             : ""
+//                                     }`}
+//                                     onClick={() =>
+//                                         selectRole(item.title)
+//                                     }
+//                                 >
+
+//                                     <div className="role-option-top">
+
+//                                         <div className="role-radio">
+//                                             {formData.role === item.title && (
+//                                                 <div />
+//                                             )}
+//                                         </div>
+
+//                                         {formData.role === item.title && (
+//                                             <Check
+//                                                 size={17}
+//                                                 className="role-check"
+//                                             />
+//                                         )}
+
+//                                     </div>
+
+
+//                                     <div className="role-option-content">
+
+//                                         <h4>
+//                                             {item.title}
+//                                         </h4>
+
+//                                         <p>
+//                                             {item.description}
+//                                         </p>
+
+//                                         <div className="role-skills">
+
+//                                             {item.skills.map((skill) => (
+//                                                 <span key={skill}>
+//                                                     {skill}
+//                                                 </span>
+//                                             ))}
+
+//                                         </div>
+
+//                                     </div>
+
+//                                 </button>
+
+//                             ))}
+
+//                         </div>
+
+//                         {errors.role && (
+//                             <small className="field-error role-error">
+//                                 {errors.role}
+//                             </small>
+//                         )}
+
+
+//                         {/* SUBMIT ERROR */}
+
+//                         {errors.submit && (
+//                             <div className="form-submit-error">
+//                                 {errors.submit}
+//                             </div>
+//                         )}
+
+
+//                         {/* BOTTOM */}
+
+//                         <div className="form-bottom">
+
+//                             <p>
+//                                 By submitting, you agree that the
+//                                 information provided is accurate.
+//                             </p>
+
+//                             <button
+//                                 type="submit"
+//                                 className="application-submit"
+//                                 disabled={loading}
+//                             >
+
+//                                 {loading ? (
+//                                     <>
+//                                         <span className="button-spinner" />
+//                                         Submitting...
+//                                     </>
+//                                 ) : (
+//                                     <>
+//                                         Submit application
+//                                         <ArrowRight size={18} />
+//                                     </>
+//                                 )}
+
+//                             </button>
+
+//                         </div>
+
+//                     </form>
+
+//                 </section>
+
+//             </main>
+
+//         </div>
+//     );
+// }
+
+// export default Apply;
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+
 import {
     ArrowLeft,
     ArrowRight,
@@ -373,26 +992,62 @@ import {
     ShieldCheck
 } from "lucide-react";
 
+
+// =====================================================
+// INTERNSHIP ROLES
+// =====================================================
+
 const roles = [
     {
         title: "Frontend Developer",
-        description: "Build modern and responsive web experiences.",
+        description:
+            "Build modern and responsive web experiences.",
         skills: ["React", "JavaScript", "CSS"]
     },
     {
         title: "Backend Developer",
-        description: "Build APIs and scalable backend systems.",
+        description:
+            "Build APIs and scalable backend systems.",
         skills: ["Node.js", "Express", "MongoDB"]
     },
     {
         title: "Data Analyst",
-        description: "Transform data into meaningful insights.",
+        description:
+            "Transform data into meaningful insights.",
         skills: ["Python", "SQL", "Power BI"]
+    },
+    {
+        title: "AI / ML Intern",
+        description:
+            "Build intelligent solutions using data and machine learning.",
+        skills: ["Python", "ML", "Pandas"]
+    },
+    {
+        title: "Cloud Engineer",
+        description:
+            "Work with cloud infrastructure and deployments.",
+        skills: ["AWS", "Docker", "Linux"]
+    },
+    {
+        title: "UI / UX Designer",
+        description:
+            "Create intuitive and engaging digital experiences.",
+        skills: ["Figma", "UX", "Prototyping"]
     }
 ];
 
+
+// =====================================================
+// APPLY PAGE
+// =====================================================
+
 function Apply() {
+
     const navigate = useNavigate();
+
+    // =================================================
+    // FORM STATE
+    // =================================================
 
     const [formData, setFormData] = useState({
         name: "",
@@ -402,563 +1057,760 @@ function Apply() {
         role: ""
     });
 
-    const [errors, setErrors] = useState({});
-    const [loading, setLoading] = useState(false);
+
+    // =================================================
+    // UI STATE
+    // =================================================
+
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const [error, setError] = useState("");
+
+
+    // =================================================
+    // HANDLE INPUT CHANGE
+    // =================================================
 
     const handleChange = (e) => {
+
         const { name, value } = e.target;
 
-        setFormData((prev) => ({
-            ...prev,
+        setFormData((previous) => ({
+            ...previous,
             [name]: value
         }));
 
-        if (errors[name]) {
-            setErrors((prev) => ({
-                ...prev,
-                [name]: ""
-            }));
+        // Remove error when user starts typing
+        if (error) {
+            setError("");
         }
     };
 
-    const selectRole = (role) => {
-        setFormData((prev) => ({
-            ...prev,
+
+    // =================================================
+    // HANDLE ROLE SELECTION
+    // =================================================
+
+    const handleRoleSelect = (role) => {
+
+        setFormData((previous) => ({
+            ...previous,
             role
         }));
 
-        setErrors((prev) => ({
-            ...prev,
-            role: ""
-        }));
+        if (error) {
+            setError("");
+        }
     };
 
-    const validate = () => {
-        const newErrors = {};
 
-        if (!formData.name.trim()) {
-            newErrors.name = "Please enter your full name.";
-        }
-
-        if (!formData.email.trim()) {
-            newErrors.email = "Please enter your email.";
-        } else if (
-            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)
-        ) {
-            newErrors.email = "Please enter a valid email.";
-        }
-
-        if (!formData.phone.trim()) {
-            newErrors.phone = "Please enter your phone number.";
-        } else if (!/^[0-9]{10}$/.test(formData.phone)) {
-            newErrors.phone = "Enter a valid 10-digit number.";
-        }
-
-        if (!formData.education.trim()) {
-            newErrors.education = "Please enter your education.";
-        }
-
-        if (!formData.role) {
-            newErrors.role = "Please select an internship role.";
-        }
-
-        return newErrors;
-    };
+    // =================================================
+    // HANDLE FORM SUBMIT
+    // =================================================
 
     const handleSubmit = async (e) => {
+
         e.preventDefault();
 
-        const validationErrors = validate();
+        setError("");
 
-        if (Object.keys(validationErrors).length > 0) {
-            setErrors(validationErrors);
 
-            const firstError = Object.keys(validationErrors)[0];
+        // ---------------------------------------------
+        // VALIDATION
+        // ---------------------------------------------
 
-            document
-                .getElementById(firstError)
-                ?.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center"
-                });
+        if (
+            !formData.name.trim() ||
+            !formData.email.trim() ||
+            !formData.phone.trim() ||
+            !formData.education.trim() ||
+            !formData.role
+        ) {
+
+            setError(
+                "Please complete all required fields before submitting."
+            );
 
             return;
         }
 
-        setLoading(true);
+
+        // ---------------------------------------------
+        // EMAIL VALIDATION
+        // ---------------------------------------------
+
+        const emailRegex =
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailRegex.test(formData.email)) {
+
+            setError(
+                "Please enter a valid email address."
+            );
+
+            return;
+        }
+
+
+        // ---------------------------------------------
+        // PHONE VALIDATION
+        // ---------------------------------------------
+
+        const phoneRegex = /^[0-9]{10}$/;
+
+        if (!phoneRegex.test(formData.phone)) {
+
+            setError(
+                "Please enter a valid 10-digit phone number."
+            );
+
+            return;
+        }
+
 
         try {
+
+            setIsSubmitting(true);
+
+
+            // -----------------------------------------
+            // GET PRODUCTION API URL
+            // -----------------------------------------
+
+            const API_URL =
+                import.meta.env.VITE_API_URL;
+
+
+            // -----------------------------------------
+            // CHECK API URL
+            // -----------------------------------------
+
+            if (!API_URL) {
+
+                throw new Error(
+                    "API configuration is missing."
+                );
+            }
+
+
+            // -----------------------------------------
+            // SEND APPLICATION TO BACKEND
+            // -----------------------------------------
+
             const response = await fetch(
-                "http://localhost:5000/api/applications",
+                `${API_URL}/api/applications`,
                 {
                     method: "POST",
+
                     headers: {
                         "Content-Type": "application/json"
                     },
+
                     body: JSON.stringify(formData)
                 }
             );
 
+
+            // -----------------------------------------
+            // GET BACKEND RESPONSE
+            // -----------------------------------------
+
             const data = await response.json();
 
+
+            // -----------------------------------------
+            // HANDLE BACKEND ERROR
+            // -----------------------------------------
+
             if (!response.ok) {
+
                 throw new Error(
-                    data.message || "Unable to submit application."
+                    data.message ||
+                    "Failed to submit application."
                 );
             }
+
+
+            // -----------------------------------------
+            // SAVE APPLICATION
+            // -----------------------------------------
 
             sessionStorage.setItem(
                 "application",
                 JSON.stringify(data.application)
             );
 
+
+            // -----------------------------------------
+            // GO TO SUCCESS PAGE
+            // -----------------------------------------
+
             navigate("/success");
 
         } catch (error) {
-            console.error(error);
 
-            setErrors({
-                submit:
-                    error.message ||
-                    "Something went wrong. Please try again."
-            });
+            console.error(
+                "Application submission error:",
+                error
+            );
+
+            setError(
+                error.message ||
+                "Something went wrong. Please try again."
+            );
 
         } finally {
-            setLoading(false);
+
+            setIsSubmitting(false);
+
         }
     };
 
+
+    // =================================================
+    // JSX
+    // =================================================
+
     return (
+
         <div className="apply-page">
 
-            {/* TOP NAV */}
+            {/* =========================================
+                HEADER
+            ========================================= */}
 
             <header className="apply-header">
 
-                <Link to="/" className="apply-back">
-                    <ArrowLeft size={17} />
-                    Back to Shuroq
+                <Link
+                    to="/"
+                    className="apply-back"
+                >
+                    <ArrowLeft size={18} />
+
+                    Back to home
                 </Link>
 
-                <Link to="/" className="apply-logo">
+
+                <div className="apply-header-logo">
                     SHUROQ
-                </Link>
+                </div>
 
-                <div className="application-secure">
-                    <ShieldCheck size={16} />
+
+                <div className="apply-secure">
+
+                    <ShieldCheck size={17} />
+
                     Secure Application
+
                 </div>
 
             </header>
 
 
-            {/* PAGE */}
+            {/* =========================================
+                MAIN WRAPPER
+            ========================================= */}
 
-            <main className="apply-wrapper">
+            <div className="apply-wrapper">
 
-                {/* LEFT SIDE */}
+
+                {/* =====================================
+                    SIDEBAR
+                ===================================== */}
 
                 <aside className="apply-sidebar">
 
-                    <div>
+                    <p className="eyebrow">
+                        INTERNSHIP APPLICATION
+                    </p>
 
-                        <p className="eyebrow">
-                            INTERNSHIP PROGRAM
-                        </p>
 
-                        <h1>
-                            Build your
-                            <span> next chapter.</span>
-                        </h1>
+                    <h1>
+                        Your next chapter
+                        <span> starts here.</span>
+                    </h1>
 
-                        <p className="apply-sidebar-text">
-                            Take the first step toward gaining
-                            real-world experience, building meaningful
-                            projects and growing with Shuroq.
-                        </p>
 
-                    </div>
+                    <p className="apply-sidebar-text">
 
+                        Tell us a little about yourself
+                        and choose the internship role
+                        you'd like to explore.
+
+                    </p>
+
+
+                    {/* STEPS */}
 
                     <div className="application-steps">
 
-                        <div className="step active">
+
+                        {/* STEP 1 */}
+
+                        <div className="application-step active">
+
                             <div className="step-number">
-                                <Check size={15} />
+
+                                <Check size={16} />
+
                             </div>
 
+
                             <div>
-                                <strong>Your details</strong>
-                                <span>Tell us about yourself</span>
+
+                                <strong>
+                                    Personal Information
+                                </strong>
+
+                                <span>
+                                    Tell us about yourself
+                                </span>
+
                             </div>
+
                         </div>
 
 
-                        <div className="step">
+                        {/* STEP 2 */}
+
+                        <div
+                            className={
+                                `application-step ${
+                                    formData.role
+                                        ? "active"
+                                        : ""
+                                }`
+                            }
+                        >
+
                             <div className="step-number">
-                                2
+
+                                {formData.role ? (
+                                    <Check size={16} />
+                                ) : (
+                                    "2"
+                                )}
+
                             </div>
 
+
                             <div>
-                                <strong>Choose your role</strong>
-                                <span>Find where you fit</span>
+
+                                <strong>
+                                    Choose a Role
+                                </strong>
+
+                                <span>
+                                    Find where you belong
+                                </span>
+
                             </div>
+
                         </div>
 
 
-                        <div className="step">
+                        {/* STEP 3 */}
+
+                        <div className="application-step">
+
                             <div className="step-number">
                                 3
                             </div>
 
+
                             <div>
-                                <strong>Submit application</strong>
-                                <span>Take your next step</span>
+
+                                <strong>
+                                    Submit Application
+                                </strong>
+
+                                <span>
+                                    Start your journey
+                                </span>
+
                             </div>
+
                         </div>
 
                     </div>
 
 
-                    <div className="sidebar-note">
+                    {/* SIDEBAR FOOTER */}
 
-                        <CheckCircle2 size={19} />
+                    <div className="apply-sidebar-footer">
 
-                        <div>
-                            <strong>What happens next?</strong>
+                        <CheckCircle2 size={18} />
 
-                            <p>
-                                Our team will review your application
-                                and contact shortlisted candidates.
-                            </p>
-                        </div>
+                        <span>
+                            Applications are reviewed
+                            by our team.
+                        </span>
 
                     </div>
 
                 </aside>
 
 
-                {/* FORM SIDE */}
 
-                <section className="apply-form-section">
+                {/* =====================================
+                    FORM SECTION
+                ===================================== */}
+
+                <main className="apply-form-section">
 
                     <div className="form-heading">
 
-                        <div>
-                            <p className="eyebrow">
-                                APPLICATION
-                            </p>
+                        <p className="eyebrow">
+                            APPLICATION FORM
+                        </p>
 
-                            <h2>
-                                Tell us about yourself.
-                            </h2>
 
-                            <p>
-                                It only takes a few minutes to apply.
-                            </p>
-                        </div>
+                        <h2>
+                            Let's get to know
+                            <span> you.</span>
+                        </h2>
 
-                        <span className="required-label">
-                            * Required
-                        </span>
+
+                        <p>
+                            Fill in your details below.
+                            It only takes a few minutes.
+                        </p>
 
                     </div>
 
+
+                    {/* =================================
+                        ERROR MESSAGE
+                    ================================= */}
+
+                    {error && (
+
+                        <div className="form-error">
+
+                            {error}
+
+                        </div>
+
+                    )}
+
+
+
+                    {/* =================================
+                        FORM
+                    ================================= */}
 
                     <form
                         className="saas-form"
                         onSubmit={handleSubmit}
                     >
 
-                        {/* PERSONAL INFORMATION */}
 
-                        <div className="form-section-title">
+                        {/* =================================
+                            PERSONAL INFORMATION
+                        ================================= */}
 
-                            <div className="form-section-icon">
-                                <User size={18} />
+                        <div className="form-section">
+
+                            <div className="form-section-title">
+
+                                <div className="form-section-icon">
+
+                                    <User size={18} />
+
+                                </div>
+
+
+                                <div>
+
+                                    <h3>
+                                        Personal Information
+                                    </h3>
+
+                                    <p>
+                                        Basic details about you
+                                    </p>
+
+                                </div>
+
                             </div>
 
-                            <div>
-                                <h3>Personal information</h3>
-                                <p>
-                                    Basic information to help us
-                                    identify you.
-                                </p>
+
+
+                            {/* NAME */}
+
+                            <div className="form-field">
+
+                                <label htmlFor="name">
+                                    Full Name
+                                </label>
+
+
+                                <div className="input-wrapper">
+
+                                    <User size={18} />
+
+                                    <input
+                                        id="name"
+                                        type="text"
+                                        name="name"
+                                        placeholder="Enter your full name"
+                                        value={formData.name}
+                                        onChange={handleChange}
+                                        autoComplete="name"
+                                    />
+
+                                </div>
+
                             </div>
 
-                        </div>
 
 
-                        {/* NAME */}
-
-                        <div className="form-field">
-
-                            <label htmlFor="name">
-                                Full name <span>*</span>
-                            </label>
-
-                            <div
-                                className={`input-wrapper ${
-                                    errors.name
-                                        ? "has-error"
-                                        : ""
-                                }`}
-                            >
-                                <User size={18} />
-
-                                <input
-                                    id="name"
-                                    name="name"
-                                    type="text"
-                                    placeholder="e.g. Shaik Mahammad Rehan"
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                />
-                            </div>
-
-                            {errors.name && (
-                                <small className="field-error">
-                                    {errors.name}
-                                </small>
-                            )}
-
-                        </div>
-
-
-                        {/* EMAIL + PHONE */}
-
-                        <div className="form-row">
+                            {/* EMAIL */}
 
                             <div className="form-field">
 
                                 <label htmlFor="email">
-                                    Email address <span>*</span>
+                                    Email Address
                                 </label>
 
-                                <div
-                                    className={`input-wrapper ${
-                                        errors.email
-                                            ? "has-error"
-                                            : ""
-                                    }`}
-                                >
+
+                                <div className="input-wrapper">
+
                                     <Mail size={18} />
 
                                     <input
                                         id="email"
-                                        name="email"
                                         type="email"
+                                        name="email"
                                         placeholder="you@example.com"
                                         value={formData.email}
                                         onChange={handleChange}
+                                        autoComplete="email"
                                     />
-                                </div>
 
-                                {errors.email && (
-                                    <small className="field-error">
-                                        {errors.email}
-                                    </small>
-                                )}
+                                </div>
 
                             </div>
 
+
+
+                            {/* PHONE */}
 
                             <div className="form-field">
 
                                 <label htmlFor="phone">
-                                    Phone number <span>*</span>
+                                    Phone Number
                                 </label>
 
-                                <div
-                                    className={`input-wrapper ${
-                                        errors.phone
-                                            ? "has-error"
-                                            : ""
-                                    }`}
-                                >
+
+                                <div className="input-wrapper">
+
                                     <Phone size={18} />
 
                                     <input
                                         id="phone"
-                                        name="phone"
                                         type="tel"
-                                        placeholder="10-digit number"
-                                        maxLength="10"
+                                        name="phone"
+                                        placeholder="10-digit phone number"
                                         value={formData.phone}
                                         onChange={handleChange}
+                                        maxLength="10"
+                                        autoComplete="tel"
                                     />
+
                                 </div>
 
-                                {errors.phone && (
-                                    <small className="field-error">
-                                        {errors.phone}
-                                    </small>
-                                )}
+                            </div>
+
+
+
+                            {/* EDUCATION */}
+
+                            <div className="form-field">
+
+                                <label htmlFor="education">
+                                    Education
+                                </label>
+
+
+                                <div className="input-wrapper">
+
+                                    <GraduationCap size={18} />
+
+                                    <input
+                                        id="education"
+                                        type="text"
+                                        name="education"
+                                        placeholder="e.g. B.Tech CSE"
+                                        value={formData.education}
+                                        onChange={handleChange}
+                                    />
+
+                                </div>
 
                             </div>
 
                         </div>
 
 
-                        {/* EDUCATION */}
 
-                        <div className="form-field">
+                        {/* =================================
+                            ROLE SELECTION
+                        ================================= */}
 
-                            <label htmlFor="education">
-                                Education <span>*</span>
-                            </label>
+                        <div className="form-section">
 
-                            <div
-                                className={`input-wrapper ${
-                                    errors.education
-                                        ? "has-error"
-                                        : ""
-                                }`}
-                            >
-                                <GraduationCap size={18} />
+                            <div className="form-section-title">
 
-                                <input
-                                    id="education"
-                                    name="education"
-                                    type="text"
-                                    placeholder="e.g. B.Tech Computer Science"
-                                    value={formData.education}
-                                    onChange={handleChange}
-                                />
+                                <div className="form-section-icon">
+
+                                    <BriefcaseBusiness size={18} />
+
+                                </div>
+
+
+                                <div>
+
+                                    <h3>
+                                        Choose Your Role
+                                    </h3>
+
+                                    <p>
+                                        Select the internship
+                                        you're interested in
+                                    </p>
+
+                                </div>
+
                             </div>
 
-                            {errors.education && (
-                                <small className="field-error">
-                                    {errors.education}
-                                </small>
-                            )}
-
-                        </div>
 
 
-                        {/* ROLE */}
+                            <div className="role-selection">
 
-                        <div className="form-section-title role-title">
+                                {roles.map((role) => (
 
-                            <div className="form-section-icon">
-                                <BriefcaseBusiness size={18} />
-                            </div>
+                                    <button
+                                        type="button"
+                                        key={role.title}
+                                        className={
+                                            `role-option ${
+                                                formData.role === role.title
+                                                    ? "selected"
+                                                    : ""
+                                            }`
+                                        }
+                                        onClick={() =>
+                                            handleRoleSelect(
+                                                role.title
+                                            )
+                                        }
+                                    >
 
-                            <div>
-                                <h3>Choose your role</h3>
-                                <p>
-                                    Select the opportunity that matches
-                                    your interests.
-                                </p>
-                            </div>
+                                        <div className="role-option-content">
 
-                        </div>
+                                            <div>
+
+                                                <strong>
+                                                    {role.title}
+                                                </strong>
+
+                                                <p>
+                                                    {role.description}
+                                                </p>
+
+                                            </div>
 
 
-                        <div className="role-selection">
+                                            <div className="role-check">
 
-                            {roles.map((item) => (
+                                                {formData.role === role.title && (
+                                                    <Check size={16} />
+                                                )}
 
-                                <button
-                                    type="button"
-                                    key={item.title}
-                                    className={`role-option ${
-                                        formData.role === item.title
-                                            ? "selected"
-                                            : ""
-                                    }`}
-                                    onClick={() =>
-                                        selectRole(item.title)
-                                    }
-                                >
+                                            </div>
 
-                                    <div className="role-option-top">
+                                        </div>
 
-                                        <div className="role-radio">
-                                            {formData.role === item.title && (
-                                                <div />
+
+                                        <div className="skill-list">
+
+                                            {role.skills.map(
+                                                (skill) => (
+
+                                                    <span
+                                                        key={skill}
+                                                    >
+                                                        {skill}
+                                                    </span>
+
+                                                )
                                             )}
-                                        </div>
-
-                                        {formData.role === item.title && (
-                                            <Check
-                                                size={17}
-                                                className="role-check"
-                                            />
-                                        )}
-
-                                    </div>
-
-
-                                    <div className="role-option-content">
-
-                                        <h4>
-                                            {item.title}
-                                        </h4>
-
-                                        <p>
-                                            {item.description}
-                                        </p>
-
-                                        <div className="role-skills">
-
-                                            {item.skills.map((skill) => (
-                                                <span key={skill}>
-                                                    {skill}
-                                                </span>
-                                            ))}
 
                                         </div>
 
-                                    </div>
+                                    </button>
 
-                                </button>
+                                ))}
 
-                            ))}
+                            </div>
 
                         </div>
 
-                        {errors.role && (
-                            <small className="field-error role-error">
-                                {errors.role}
-                            </small>
-                        )}
 
 
-                        {/* SUBMIT ERROR */}
-
-                        {errors.submit && (
-                            <div className="form-submit-error">
-                                {errors.submit}
-                            </div>
-                        )}
-
-
-                        {/* BOTTOM */}
+                        {/* =================================
+                            FORM BOTTOM
+                        ================================= */}
 
                         <div className="form-bottom">
 
-                            <p>
-                                By submitting, you agree that the
-                                information provided is accurate.
-                            </p>
+
+                            <div className="form-security">
+
+                                <ShieldCheck size={18} />
+
+                                <div>
+
+                                    <strong>
+                                        Your information is secure
+                                    </strong>
+
+                                    <span>
+                                        We'll only use your details
+                                        for the internship process.
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
 
                             <button
                                 type="submit"
                                 className="application-submit"
-                                disabled={loading}
+                                disabled={isSubmitting}
                             >
 
-                                {loading ? (
+                                {isSubmitting ? (
+
                                     <>
-                                        <span className="button-spinner" />
+                                        <span className="submit-spinner"></span>
+
                                         Submitting...
+
                                     </>
+
                                 ) : (
+
                                     <>
-                                        Submit application
+                                        Submit Application
+
                                         <ArrowRight size={18} />
+
                                     </>
+
                                 )}
 
                             </button>
@@ -967,12 +1819,13 @@ function Apply() {
 
                     </form>
 
-                </section>
+                </main>
 
-            </main>
+            </div>
 
         </div>
     );
 }
+
 
 export default Apply;
